@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+from django.utils import timezone
 
 from pathlib import Path
 
@@ -129,3 +130,50 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timezone.timedelta(minutes=45),
+    "REFRESH_TOKEN_LIFETIME": timezone.timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": True,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "VERIFYING_KEY": "",
+    "AUDIENCE": None,
+    "ISSUER": None,
+    "JSON_ENCODER": None,
+    "JWK_URL": None,
+    "LEEWAY": 0,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
+    "JTI_CLAIM": "jti",
+    "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
+    "SLIDING_TOKEN_LIFETIME": timezone.timedelta(minutes=65),
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timezone.timedelta(days=1),
+}
+
+
+# RABBITMQ CONFIGURATION
+RABBITMQ_HOST = "rattlesnake-01.rmq.cloudamqp.com"
+RABBITMQ_URL = "amqps://omqlsnbm:5djne6gA8s7dZNLBFafQFlVLuU9Q2HCG@rattlesnake.rmq.cloudamqp.com/omqlsnbm"
+RABBITMQ_PORT = 5672
+RABBITMQ_VHOST = "omqlsnbm"
+RABBITMQ_USER = "omqlsnbm"
+RABBITMQ_PASSWORD = "5djne6gA8s7dZNLBFafQFlVLuU9Q2HCG"
+
+SITE_ID = 1
+
+GOOGLE_OAUTH2_CLIENT_ID = (
+    "225889750115-jjs6973er28ktujmr5p609ti6v858o89.apps.googleusercontent.com"
+)
+GOOGLE_OAUTH2_CLIENT_SECRET = "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"
+GOOGLE_PROJECT_ID = "kremlin"
+GOOGLE_REDIRECT_URI = "http://localhost:8000/auth/google/callback"
+
+KREMLIN_URL = "https://kremlin.share-hub.co"
