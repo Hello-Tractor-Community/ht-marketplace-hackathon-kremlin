@@ -195,6 +195,10 @@ CELERY_RESULT_SERIALIZER = "json"
 
 SITE_ID = 1
 
+GOOGLE_OAUTH_CLIENT_ID = os.getenv('GOOGLE_OAUTH_CLIENT_ID')
+GOOGLE_OAUTH_CLIENT_SECRET = os.getenv('GOOGLE_OAUTH_CLIENT_SECRET')
+GOOGLE_PROJECT_ID = "kremlin"
+GOOGLE_REDIRECT_URI = "http://localhost:8000/auth/google/callback"
 
 KREMLIN_URL = "https://kremlin.share-hub.co"
 
