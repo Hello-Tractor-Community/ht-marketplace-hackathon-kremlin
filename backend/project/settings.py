@@ -9,9 +9,15 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-from django.utils import timezone
+import os
+from dotenv import load_dotenv
 
-from pathlib import Path
+# Load environment variables from .env file
+load_dotenv()
+
+from django.utils import timezone # noqa
+
+from pathlib import Path # noqa
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,18 +38,18 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.sites',
-    'rest_framework',
-    'drf_yasg',
-
-    'users',
-    'core'
+    "daphne",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django.contrib.sites",
+    "rest_framework",
+    "drf_yasg",
+    "users",
+    "core",
 ]
 
 MIDDLEWARE = [
@@ -74,6 +80,7 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = "project.asgi.application"
 WSGI_APPLICATION = 'project.wsgi.application'
 
 
@@ -161,19 +168,68 @@ SIMPLE_JWT = {
 
 # RABBITMQ CONFIGURATION
 RABBITMQ_HOST = "rattlesnake-01.rmq.cloudamqp.com"
-RABBITMQ_URL = "amqps://omqlsnbm:5djne6gA8s7dZNLBFafQFlVLuU9Q2HCG@rattlesnake.rmq.cloudamqp.com/omqlsnbm"
-RABBITMQ_PORT = 5672
+RABBITMQ_PORT = 5671
 RABBITMQ_VHOST = "omqlsnbm"
 RABBITMQ_USER = "omqlsnbm"
 RABBITMQ_PASSWORD = "5djne6gA8s7dZNLBFafQFlVLuU9Q2HCG"
 
+# RabbitMQ URL formatted for Celery
+RABBITMQ_URL = (
+    f"amqps://{RABBITMQ_USER}:{RABBITMQ_PASSWORD}@{RABBITMQ_HOST}/{RABBITMQ_VHOST}"
+)
+
+CELERY_BROKER_URL = RABBITMQ_URL
+
+
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_RESULT_EXTENDED = True
+CELERY_DISABLE_RATE_LIMITS = True
+CELERY_SEND_TASK_SENT_EVENT = True
+CELERY_RESULT_PERSISTENT = True
+CELERY_IGNORE_RESULT = False
+CELERY_ACCEPT_CONTENT = ["application/json", "application/x-python-serialize"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+
 SITE_ID = 1
 
-GOOGLE_OAUTH2_CLIENT_ID = (
-    "225889750115-jjs6973er28ktujmr5p609ti6v858o89.apps.googleusercontent.com"
-)
-GOOGLE_OAUTH2_CLIENT_SECRET = "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"
+GOOGLE_OAUTH_CLIENT_ID = os.getenv('GOOGLE_OAUTH_CLIENT_ID')
+GOOGLE_OAUTH_CLIENT_SECRET = os.getenv('GOOGLE_OAUTH_CLIENT_SECRET')
 GOOGLE_PROJECT_ID = "kremlin"
 GOOGLE_REDIRECT_URI = "http://localhost:8000/auth/google/callback"
 
 KREMLIN_URL = "https://kremlin.share-hub.co"
+
+# EMAIL CONFIGURATION
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "gabrielokemwa83@gmail.com"
+EMAIL_HOST_PASSWORD = "xwgr cgjj bgrc sgon"
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+CELERY_RESULT_BACKEND = "rpc://"
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "{levelname} | {asctime} | {filename} | {funcName} | {lineno} | {message}",
+            "style": "{",
+        }
+    },
+    "handlers": {
+        "console": {
+            "level": "INFO",
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "": {"handlers": ["console"], "level": "DEBUG", "propagate": False},
+    },
+}

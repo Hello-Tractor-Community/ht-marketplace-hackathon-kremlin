@@ -1,13 +1,14 @@
 from django.contrib.auth import login
+from django.contrib import auth
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
 from django.db import transaction
 from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
 from rest_framework import status, viewsets, mixins, permissions
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
+
 
 from .models import Profile
 from .serializers import (
@@ -16,8 +17,9 @@ from .serializers import (
     UserRegisterSerializer,
     UserSerializer,
     ProfileSerializer,
-    GoogleCallbackSerializer,
 )
+from .services import GoogleRawLoginFlowService
+from .utils import send_invite_email
 
 
 class UserViewSet(
@@ -98,6 +100,7 @@ class UserViewSet(
             serializer.is_valid(raise_exception=True)
             with transaction.atomic():
                 user = serializer.save()
+                user.send_invite_email()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -114,57 +117,25 @@ class UserViewSet(
         serializer = self.get_serializer(request.user)
         return Response(serializer.data)
 
-    @swagger_auto_schema(
-        operation_description="Handle Google OAuth2 callback",
-        manual_parameters=[
-            openapi.Parameter(
-                "code",
-                openapi.IN_QUERY,
-                description="Authorization code from Google",
-                type=openapi.TYPE_STRING,
-            ),
-            openapi.Parameter(
-                "state",
-                openapi.IN_QUERY,
-                description="State parameter for CSRF protection",
-                type=openapi.TYPE_STRING,
-            ),
-            openapi.Parameter(
-                "error",
-                openapi.IN_QUERY,
-                description="Error message from Google",
-                type=openapi.TYPE_STRING,
-            ),
-        ],
-        responses={
-            200: "Login successful",
-            400: "Invalid request or authentication failed",
-            401: "CSRF check failed",
-        },
-    )
+    @action(detail=False, methods=["get"], url_path="google/redirect")
+    def google_redirect(self, request, **kwargs):
+        flow = GoogleRawLoginFlowService()
+        authorization_url, state = flow.get_authorization_url()
+        request.session["google_oauth2_state"] = state
+        return redirect(authorization_url)
+
     @action(detail=False, methods=["get"])
-    def google_callback(self, request):
-        serializer = GoogleCallbackSerializer(
-            data=request.query_params, context={"request": request}
+    def google_login(self, request, **kwargs):
+        data = request.GET.dict() or request.data
+        serializer = self.get_serializer_class()(
+            data=data, context=self.get_serializer_context()
         )
-        try:
-            serializer.is_valid(raise_exception=True)
-            user = serializer.save()
-            login(request, user)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
 
-            # Generate JWT tokens
-            refresh = RefreshToken.for_user(user)
-            access_token = str(refresh.access_token)
-
-            # Redirect to frontend with token
-            redirect_url = f"{request.session.get('frontend_redirect_url', '/')}?token={access_token}"
-            return redirect(redirect_url)
-        except Exception as e:
-            error_redirect = (
-                f"{request.session.get('frontend_redirect_url', '/')}?error={str(e)}"
-            )
-            return redirect(error_redirect)
-
+        auth.login(request, user)
+        token = RefreshToken.for_user(user)
+        return redirect(f"{serializer.validated_data['redirect_uri']}?token={token}")
 
 class ProfileViewSet(
     viewsets.GenericViewSet,

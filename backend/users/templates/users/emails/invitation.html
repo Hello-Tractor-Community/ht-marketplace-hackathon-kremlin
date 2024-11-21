@@ -1,16 +1,64 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
-
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            font-family: 'Arial', 'Helvetica', sans-serif;
+            color: #083a56;
+            font-size: 24px;
+            text-align: center;
+        }
+        p {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .highlight {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <h2>Welcome to Tractor Platform, {{ username }}!</h2>
 
-<div>
-    <h2 style=" font-family: arial, helvetica; color: #083a56;">Hi There, {{ username }}</h2>
+        <p>Thank you for joining our community! We're excited to have you with us on this journey of growth, learning, and success.</p>
 
-    <p style=" margin-bottom: 20px; font-family: arial, helvetica; color: #333;"> Thank You for Joining Tractor Platform ! <b>
-            You are most welcome </p>
+        <p>At Tractor Platform, we are committed to providing you with the best tools, resources, and support to help you achieve your goals. Whether you are here to learn new skills, expand your network, or discover amazing opportunities, you’ve come to the right place.</p>
 
-</div>
+        <p class="highlight">We believe that your success starts here, and we are thrilled to be part of your journey. Get ready to explore all the exciting features and benefits that await you!</p>
+
+        <p>If you need any assistance or have any questions, feel free to reach out to our support team anytime. We are here to help you!</p>
+
+        <div class="footer">
+            <p>Best regards,</p>
+            <p><strong>The Tractor Platform Team</strong></p>
+        </div>
+    </div>
 </body>
 </html>
