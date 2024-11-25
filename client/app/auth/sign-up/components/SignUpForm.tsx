@@ -41,7 +41,6 @@ export default function SignUpForm() {
   };
 
   const onGoogleSignUp = () => {
-    // Implement Google Sign-Up Logic
     console.log("Google Sign Up Initiated");
   };
 

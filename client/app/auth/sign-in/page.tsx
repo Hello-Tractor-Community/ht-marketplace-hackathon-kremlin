@@ -10,7 +10,7 @@ const SignIn = () => {
         alt="Lady"
         width={400}
         height={400}
-        className="hidden md:block"
+        className="hidden md:block ml-[5%]"
       />
       <SignInForm/>
     </div>
