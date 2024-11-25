@@ -1,7 +1,6 @@
 import React from "react";
 import Image from "next/image";
 import Header from "../components/Header";
-import TractorsOnSale from "./components/TractorsOnSale";
 import TractorMarketplace from "./components/TractorMarketplace";
 import SearchBox from "@/components/search-box";
 
