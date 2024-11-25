@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import Header from "../components/Header";
 import TractorMarketplace from "./components/TractorMarketplace";
+import Footer from "../components/Footer";
 import SearchBox from "@/components/search-box";
 
 const ListingsPage = () => {
@@ -51,8 +52,8 @@ const ListingsPage = () => {
        
       </div>
       <TractorMarketplace/>
-      {/* <TractorsOnSale/> */}
       </div>
+      <Footer/>
     </div>
   );
 };

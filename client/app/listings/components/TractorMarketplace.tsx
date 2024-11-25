@@ -72,7 +72,7 @@ const TractorMarketplace = () => {
               className="flex items-center justify-between cursor-pointer mb-3"
               onClick={() => toggleSection("price")}
             >
-              <h3 className="font-semibold text-gray-700">PRICE</h3>
+              <h3 className="font-semibold text-gray-700 text-primaryColor">PRICE</h3>
               <ChevronDown
                 className={`w-5 h-5 transition-transform ${
                   expanded.price ? "rotate-180" : ""
@@ -95,7 +95,7 @@ const TractorMarketplace = () => {
               className="flex items-center justify-between cursor-pointer mb-3"
               onClick={() => toggleSection("make")}
             >
-              <h3 className="font-semibold text-gray-700">MAKE</h3>
+              <h3 className="font-semibold text-gray-700 text-primaryColor">MAKE</h3>
               <ChevronDown
                 className={`w-5 h-5 transition-transform ${
                   expanded.make ? "rotate-180" : ""
@@ -123,7 +123,7 @@ const TractorMarketplace = () => {
               className="flex items-center justify-between cursor-pointer mb-3"
               onClick={() => toggleSection("location")}
             >
-              <h3 className="font-semibold text-gray-700">LOCATION</h3>
+              <h3 className="font-semibold text-gray-700 text-primaryColor">LOCATION</h3>
               <ChevronDown
                 className={`w-5 h-5 transition-transform ${
                   expanded.location ? "rotate-180" : ""
@@ -151,7 +151,7 @@ const TractorMarketplace = () => {
               className="flex items-center justify-between cursor-pointer mb-3"
               onClick={() => toggleSection("fuel")}
             >
-              <h3 className="font-semibold text-gray-700">FUEL</h3>
+              <h3 className="font-semibold text-gray-700 text-primaryColor">FUEL</h3>
               <ChevronDown
                 className={`w-5 h-5 transition-transform ${
                   expanded.fuel ? "rotate-180" : ""
