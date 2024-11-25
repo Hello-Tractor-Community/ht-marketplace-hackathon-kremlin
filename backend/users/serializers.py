@@ -6,7 +6,6 @@ from django.db import transaction
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
-
 from users.selectors import get_user
 from users.services import GoogleRawLoginFlowService
 from users.types import GenericToken
@@ -14,6 +13,7 @@ from users.types import GenericToken
 from .models import Profile
 
 logger = logging.getLogger(__name__)
+
 
 class TokenSerializer(serializers.Serializer):
     access = serializers.CharField(required=False, read_only=True)
@@ -103,6 +103,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         fields = ["uid", "user", "profile_picture", "metadata", "created", "modified"]
+
 
 class GoogleCallbackSerializer(serializers.Serializer):
     code = serializers.CharField(required=False, write_only=True)

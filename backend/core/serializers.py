@@ -1,13 +1,9 @@
 from rest_framework import serializers
-from .models import (
-    TractorListing,
-    TractorImage,
-    AgriImplement,
-    OperatorProfile,
-    Conversation,
-    Message,
-)
+
 from users.models import Profile
+
+from .models import (AgriImplement, Conversation, Message, OperatorProfile,
+                     TractorImage, TractorListing)
 
 
 class ProfileSerializer(serializers.ModelSerializer):

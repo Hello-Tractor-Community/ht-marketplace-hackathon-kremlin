@@ -1,23 +1,18 @@
-from django.contrib.auth import login
 from django.contrib import auth
+from django.contrib.auth import login
 from django.contrib.auth.models import User
-from django.shortcuts import redirect
 from django.db import transaction
+from django.shortcuts import redirect
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status, viewsets, mixins, permissions
+from rest_framework import mixins, permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
-
 from .models import Profile
-from .serializers import (
-    TokenSerializer,
-    UserLoginSerializer,
-    UserRegisterSerializer,
-    UserSerializer,
-    ProfileSerializer,
-)
+from .serializers import (ProfileSerializer, TokenSerializer,
+                          UserLoginSerializer, UserRegisterSerializer,
+                          UserSerializer)
 from .services import GoogleRawLoginFlowService
 from .utils import send_invite_email
 
