@@ -99,8 +99,9 @@ const Header = () => {
               </button>
             </div>
             <div className="md:flex items-center md:gap-3 hidden">
-              <Link href="/auth/sign-up">Sign In/ Registration</Link>
-              Sign In/ Registration
+              <Link href="/auth/sign-up" className="nav-link">
+                Sign In/ Registration
+              </Link>
               <Link href="/listings">
                 <PrimaryButton>
                   Buy A Tractor <ChevronDown />
