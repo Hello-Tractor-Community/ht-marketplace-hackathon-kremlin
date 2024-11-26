@@ -40,11 +40,23 @@ Find the system architecture diagram [here](./assets/system_architecture_flow.pn
 
 This [link](https://www.figma.com/design/5Bw1JsZGxde3yXnFm2wJ6X/Kremlin-Hackathon-Design?node-id=0-1&node-type=canvas&t=nfeRpbfGqGdWLOpG-0) contains the design that is implementd for the project.
 
-## Contributing
+
+### API Documentation
+
+This [link](https://kremlin.share-hub.co/swagger/) contains the api documentation of the project. 
+
+### Project structure
+
+- `backend` : *This is directory contains the backend of the application done in Django*
+ - `client` : *This directory will contain the frontend of the application done in Next*
+ - `docs` : *This directory will contain the documentation of the project which is where this file is*
+
+
+# Contributing
 
 We welcome contributions from the community to enhance the tractor market place website. If you'd like to contribute, please follow our [contribution guidelines](contributing.md).
 
-## Contact
+# Contact
 If you have any questions or inquiries, feel free to reach out to us [here]().
 
 Happy coding!
