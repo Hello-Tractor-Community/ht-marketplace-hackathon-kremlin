@@ -1,4 +1,7 @@
 import { z } from "zod";
+
+// const UserRole = z.enum(["Buyer", "Seller"]);
+// type UserRole = z.infer<typeof UserRole>;
 export const SignUpValidation = z.object({
   firstName: z
     .string()

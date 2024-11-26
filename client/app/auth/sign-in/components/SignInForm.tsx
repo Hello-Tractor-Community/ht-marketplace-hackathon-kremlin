@@ -30,8 +30,23 @@ export default function SignInForm() {
   const onSubmit = (values: z.infer<typeof SignUpValidation>) => {
     console.log("Form values:", values);
   };
+  
 
-  const onGoogleSignUp = () => {
+  const onGoogleSignUp = async () => {
+    try {
+      const response = await fetch('https://kremlin.share-hub.co/users/users/google_login/')
+      const data = response.json
+
+      console.log(data)
+    } catch (error) {
+       // Type guard to check if error is an instance of Error
+       if (error instanceof Error) {
+        setErrorMessage(error.message || "Failed to Log you in");
+      } else {
+        // Fallback for unknown error types
+        setErrorMessage("An unknown error occurred");
+      }
+    }
     console.log("Google Sign Up Initiated");
   };
 

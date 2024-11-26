@@ -66,8 +66,13 @@ export default function SignUpForm() {
       console.log("API Response:", data);
 
       // Optionally, redirect the user to the login page or dashboard
-    } catch (error: any) {
-      setErrorMessage(error.message || "Failed to create account");
+    } catch (error) {
+      if (error instanceof Error) {
+        setErrorMessage(error.message || "Failed to create account");
+      } else {
+        // Fallback for unknown error types
+        setErrorMessage("An unknown error occurred");
+      }
     } finally {
       setIsLoading(false);
     }
