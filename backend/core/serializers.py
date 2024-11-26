@@ -9,7 +9,7 @@ from .models import (AgriImplement, Conversation, Message, OperatorProfile,
 class TractorImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = TractorImage
-        fields = ["id", "image", "is_primary"]
+        fields = ["id", "image_1", "image_2", "image_3", "is_primary"]
 
 
 class TractorListingSerializer(serializers.ModelSerializer):

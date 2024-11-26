@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
@@ -24,20 +24,52 @@ import { SignUpValidation } from "@/utils/validation";
 import { ChevronRight } from "lucide-react";
 
 export default function SignUpForm() {
+  const [isLoading, setIsLoading] = useState(false); 
+  const [errorMessage, setErrorMessage] = useState<string | null>(null); 
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
   const form = useForm({
     resolver: zodResolver(SignUpValidation),
     defaultValues: {
       firstName: "",
       lastName: "",
       email: "",
-      phoneNumber: "",
+      // phoneNumber: "",
       role: "Buyer",
       password: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof SignUpValidation>) => {
-    console.log("Form values:", values);
+  const onSubmit = async (values: z.infer<typeof SignUpValidation>) => {
+    setIsLoading(true);
+    setErrorMessage(null);
+    setSuccessMessage(null);
+
+    try {
+      // API Call to UserRegistration
+      const response = await fetch("http://127.0.0.1:8000/users/users/register/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Something went wrong");
+      }
+
+      const data = await response.json();
+      setSuccessMessage("Account created successfully! Please log in.");
+      console.log("API Response:", data);
+
+      // Optionally, redirect the user to the login page or dashboard
+    } catch (error: any) {
+      setErrorMessage(error.message || "Failed to create account");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const onGoogleSignUp = () => {
@@ -69,6 +101,16 @@ export default function SignUpForm() {
           <span className="px-4 text-gray-500 text-sm">OR</span>
           <div className="flex-grow border-t border-gray-300"></div>
         </div>
+
+        {/* Display error or success messages */}
+        {errorMessage && (
+          <div className="text-red-500 text-center text-sm">{errorMessage}</div>
+        )}
+        {successMessage && (
+          <div className="text-green-500 text-center text-sm">
+            {successMessage}
+          </div>
+        )}
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -132,7 +174,7 @@ export default function SignUpForm() {
               )}
             />
 
-            {/* Phone Number */}
+            {/* Phone Number
             <FormField
               control={form.control}
               name="phoneNumber"
@@ -150,7 +192,7 @@ export default function SignUpForm() {
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            /> */}
 
             {/* Role */}
             <FormField
@@ -201,9 +243,10 @@ export default function SignUpForm() {
             {/* Submit Button */}
             <Button
               type="submit"
+              disabled={isLoading}
               className="w-full bg-primaryColor hover:bg-orange-600 flex items-center justify-center gap-2"
             >
-              Create Account
+              {isLoading ? "Creating Account..." : "Create Account"}
               <ChevronRight className="h-4 w-4" />
             </Button>
           </form>
