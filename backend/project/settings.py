@@ -279,6 +279,14 @@ CORS_ALLOWED_ORIGINS = [
 # SECURE_SSL_REDIRECT = True
 # SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://kremlin.share-hub.co",  
+    "http://localhost:3000",
+    "http://localhost:8000",
+    "https://client.share-hub.co",
+]
+
 # Session security
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
