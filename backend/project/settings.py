@@ -272,7 +272,6 @@ SWAGGER_SETTINGS = {
     },
     "USE_SESSION_AUTH": False,
     "VALIDATOR_URL": None,
-    "SCHEMA_PROTOCOL": "https",
 }
 
 
