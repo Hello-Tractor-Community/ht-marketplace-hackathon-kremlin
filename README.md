@@ -35,11 +35,11 @@ Please organize and complete the following deliverables within this repository:
 
 ### 2. **Demo Video**
 - Upload your video to YouTube, Vimeo, or as an mp4 file.
-- **Link to Demo Video**: [Insert your video link here]
+- **Link to Demo Video**: [Video link here](https://drive.google.com/file/d/1DrHEiVm_5FaPJiJMt0lEvXi-J-PKc4zH/view?usp=drive_link)
 
 ### 3. **Live Application URL**
 - Deploy your application to a platform like Vercel, Netlify, or AWS.
-- **Link to Live App**: [Insert live application URL here]
+- **Link to Live App**: [Live Application URL here](https://client.share-hub.co/)
 
 ### 4. **Technical Documentation**
 - Include setup instructions for running the project locally.

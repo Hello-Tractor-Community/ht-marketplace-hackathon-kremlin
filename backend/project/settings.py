@@ -144,6 +144,10 @@ STATICFILES_DIRS = [
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -266,6 +270,10 @@ CHANNEL_LAYERS = {
     },
 }
 
+# settings.py
+BASE_URL = "https://kremlin.share-hub.co"
+
+
 SWAGGER_SETTINGS = {
     "SECURITY_DEFINITIONS": {
         "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
@@ -275,10 +283,13 @@ SWAGGER_SETTINGS = {
     "SCHEMA_PROTOCOL": "https",
 }
 
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 
 CORS_ALLOWED_ORIGINS = [
     "https://kremlin.share-hub.co",
+    "http://kremlin.share-hub.co",
     "http://localhost:3000",
     "http://localhost:8000",
     "https://client.share-hub.co",
