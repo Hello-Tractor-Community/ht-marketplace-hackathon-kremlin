@@ -266,18 +266,29 @@ CHANNEL_LAYERS = {
     },
 }
 
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
+    },
+    "USE_SESSION_AUTH": False,
+    "VALIDATOR_URL": None,
+    "SCHEMA_PROTOCOL": "https",
+}
+
+
 
 CORS_ALLOWED_ORIGINS = [
-    "https://admin.karegivv.com",
-    "https://karegivv.com",
-    "https://www.karegivv.com",
+    "https://kremlin.share-hub.co",
     "http://localhost:3000",
     "http://localhost:8000",
+    "https://client.share-hub.co",
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
 
-# SECURE_SSL_REDIRECT = True
-# SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 
 CSRF_TRUSTED_ORIGINS = [
