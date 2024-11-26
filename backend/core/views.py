@@ -1,88 +1,105 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from .models import Conversation
-from .serializers import ConversationSerializer
-from django.http import JsonResponse
-from django.contrib.admin.views.decorators import staff_member_required
-from django.db.models import Count
-from django.db.models.functions import TruncMonth
-from django.utils import timezone
-from datetime import timedelta
-from core.models import TractorListing
-from django.db import models
+from rest_framework import viewsets, permissions, filters
+from django_filters.rest_framework import DjangoFilterBackend
+from .models import (
+    TractorListing,
+    AgriImplement,
+    OperatorProfile,
+    Conversation,
+    Message,
+)
+from .serializers import (
+    TractorListingSerializer,
+    AgriImplementSerializer,
+    OperatorProfileSerializer,
+    ConversationSerializer,
+    MessageSerializer,
+)
 
 
-@staff_member_required
-def tractor_analytics_data(request):
-    end_date = timezone.now()
-    start_date = end_date - timedelta(days=365)
+class IsSellerOrReadOnly(permissions.BasePermission):
+    def has_permission(self, request, view):
+        return True
 
-    # Monthly listings count
-    monthly_data = (
-        TractorListing.objects.filter(created_at__range=(start_date, end_date))
-        .annotate(month=TruncMonth("created_at"))
-        .values("month")
-        .annotate(count=Count("id"))
-        .order_by("month")
-    )
-
-    price_ranges = {
-        "0-500k": (0, 500000),
-        "500k-1M": (500000, 1000000),
-        "1M-2M": (1000000, 2000000),
-        "2M+": (2000000, float("inf")),
-    }
-
-    price_distribution = {}
-    for range_name, (min_price, max_price) in price_ranges.items():
-        count = TractorListing.objects.filter(
-            price__gte=min_price,
-            price__lt=max_price if max_price != float("inf") else None,
-        ).count()
-        price_distribution[range_name] = count
-
-    condition_data = TractorListing.objects.values("condition").annotate(
-        count=Count("id")
-    )
-
-    brand_data = (
-        TractorListing.objects.values("brand")
-        .annotate(count=Count("id"))
-        .order_by("-count")[:5]
-    )
-
-    # Calculate general statistics
-    total_listings = TractorListing.objects.count()
-    active_listings = TractorListing.objects.filter(is_active=True).count()
-    avg_price = (
-        TractorListing.objects.filter(is_active=True).aggregate(
-            avg_price=models.Avg("price")
-        )["avg_price"]
-        or 0
-    )
-
-    return JsonResponse(
-        {
-            "monthly_data": list(monthly_data),
-            "price_distribution": price_distribution,
-            "condition_data": list(condition_data),
-            "brand_data": list(brand_data),
-            "statistics": {
-                "total_listings": total_listings,
-                "active_listings": active_listings,
-                "avg_price": float(avg_price),
-            },
-        }
-    )
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        return obj.seller.user == request.user
 
 
-class ConversationListView(APIView):
-    permission_classes = [IsAuthenticated]
+class TractorListingViewSet(viewsets.ModelViewSet):
+    queryset = TractorListing.objects.all()
+    serializer_class = TractorListingSerializer
+    permission_classes = [IsSellerOrReadOnly]
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+    filterset_fields = ["brand", "model", "year", "price", "condition", "location"]
+    search_fields = ["brand", "model", "description"]
+    ordering_fields = ["price", "year", "created_at"]
 
-    def get(self, request, *args, **kwargs):
-        conversations = Conversation.objects.filter(
-            sender__user=request.user, receiver__user=request.user
-        )
-        serializer = ConversationSerializer(conversations, many=True)
-        return Response(serializer.data)
+    def perform_create(self, serializer):
+        serializer.save(seller=self.request.user.profile)
+
+    def perform_update(self, serializer):
+        serializer.save(seller=self.request.user.profile)
+
+
+class AgriImplementViewSet(viewsets.ModelViewSet):
+    queryset = AgriImplement.objects.all()
+    serializer_class = AgriImplementSerializer
+    permission_classes = [IsSellerOrReadOnly]
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+    filterset_fields = [
+        "name",
+        "implement_type",
+        "brand",
+        "price",
+        "condition",
+        "location",
+    ]
+    search_fields = ["name", "description"]
+    ordering_fields = ["price", "created_at"]
+
+
+class OperatorProfileViewSet(viewsets.ModelViewSet):
+    queryset = OperatorProfile.objects.all()
+    serializer_class = OperatorProfileSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
+    filterset_fields = ["location", "experience_years", "is_verified"]
+    search_fields = ["certifications", "location"]
+    ordering_fields = ["hourly_rate", "experience_years"]
+
+
+class ConversationViewSet(viewsets.ModelViewSet):
+    queryset = Conversation.objects.all()
+    serializer_class = ConversationSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Conversation.objects.filter(
+            sender__user=user
+        ) | Conversation.objects.filter(receiver__user=user)
+
+
+class MessageViewSet(viewsets.ModelViewSet):
+    queryset = Message.objects.all()
+    serializer_class = MessageSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Message.objects.filter(
+            conversation__sender__user=user
+        ) | Message.objects.filter(conversation__receiver__user=user)
