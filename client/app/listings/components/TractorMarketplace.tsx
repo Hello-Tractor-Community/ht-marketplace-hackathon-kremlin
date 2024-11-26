@@ -6,7 +6,19 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ChevronDown, FuelIcon } from "lucide-react";
 import Image from "next/image";
 
-const TractorMarketplace = () => {
+interface Tractor {
+  id: string;
+  name: string;
+  brand: string;
+  price: number;
+  location: string;
+}
+
+interface TractorMarketplaceProps {
+  tractors: Tractor[];
+}
+
+const TractorMarketplace = ({tractors}) => {
   const [expanded, setExpanded] = useState({
     price: true,
     make: true,
@@ -54,7 +66,7 @@ const TractorMarketplace = () => {
   const locations = ["Nairobi", "Mombasa", "Kisumu"];
   const fuelTypes = ["Petrol", "Diesel"];
 
-  const toggleSection = (section) => {
+  const toggleSection = (section: string) => {
     setExpanded((prev) => ({
       ...prev,
       [section]: !prev[section],

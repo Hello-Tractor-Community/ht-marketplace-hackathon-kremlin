@@ -1,17 +1,14 @@
 import { z } from "zod";
+
+// const UserRole = z.enum(["Buyer", "Seller"]);
+// type UserRole = z.infer<typeof UserRole>;
 export const SignUpValidation = z.object({
   username: z
     .string()
     .min(1, "First Name is required")
     .max(50, "First Name must be less than 50 characters"),
   email: z.string().email("Invalid email address").min(1, "Email is required"),
-  role: z
-    .enum(["Buyer", "Seller"], {
-      required_error: "Role is required",
-    })
-    .refine((value) => value === "Buyer" || value === "Seller", {
-      message: "Invalid selection for Buyer/Seller",
-    }),
+  role: z.string(),
   password: z
     .string()
     .min(8, "Password must be at least 8 characters")
@@ -24,9 +21,9 @@ export const SignUpValidation = z.object({
 export const SignInValidation = z.object({
   // email: z.string().email("Invalid email address").min(1, "Email is required"),
   username: z
-  .string()
-  .min(1, "First Name is required")
-  .max(50, "First Name must be less than 50 characters"),
+    .string()
+    .min(1, "First Name is required")
+    .max(50, "First Name must be less than 50 characters"),
   password: z
     .string()
     .min(8, "Password must be at least 8 characters")

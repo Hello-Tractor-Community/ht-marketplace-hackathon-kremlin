@@ -1,14 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { Card } from "@/components/ui/card";
-import {
-  Whatsapp,
-  Envelope,
-  Messenger,
-  Twitter,
-  Facebook,
-  SkypeIcon,
-} from "lucide-react";
+import { MailCheckIcon } from "lucide-react";
 
 const ChatInterface = () => {
   const messages = [
@@ -44,12 +36,12 @@ const ChatInterface = () => {
 
   const contactTypes = ["Email", "Text", "Call", "Note"];
   const socialIcons = [
-    { icon: Whatsapp, color: "text-green-500" },
-    { icon: Envelope, color: "text-gray-500" },
-    { icon: Messenger, color: "text-blue-500" },
-    { icon: Twitter, color: "text-blue-400" },
-    { icon: Facebook, color: "text-blue-600" },
-    { icon: Skype, color: "text-blue-500" },
+    { icon: MailCheckIcon, color: "text-green-500" },
+    { icon: MailCheckIcon, color: "text-gray-500" },
+    { icon: MailCheckIcon, color: "text-blue-500" },
+    { icon: MailCheckIcon, color: "text-blue-400" },
+    { icon: MailCheckIcon, color: "text-blue-600" },
+    { icon: MailCheckIcon, color: "text-blue-500" },
   ];
 
   return (

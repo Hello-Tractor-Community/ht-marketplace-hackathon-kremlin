@@ -77,16 +77,20 @@ export default function SignUpForm() {
       console.log("API Response:", data);
 
       // router.push('/auth/sign-in')
-      window.location.href = '/auth/sign-in'
+      window.location.href = "/auth/sign-in";
 
       // Optionally, redirect the user to the login page or dashboard
-    } catch (error: any) {
-      setErrorMessage(error.message || "Failed to create account");
+    } catch (error) {
+      if (error instanceof Error) {
+        setErrorMessage(error.message || "Failed to create account");
+      } else {
+        // Fallback for unknown error types
+        setErrorMessage("An unknown error occurred");
+      }
     } finally {
       setIsLoading(false);
     }
   };
-
 
   const onGoogleSignUp = () => {
     console.log("Google Sign Up Initiated");

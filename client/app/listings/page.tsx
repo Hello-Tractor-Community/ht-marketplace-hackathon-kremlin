@@ -8,13 +8,13 @@ import SearchBox from "@/components/search-box";
 
 const ListingsPage = () => {
   const [tractors, setTractors] = useState([]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
     try {
       const response = await fetch(
-        "https://kremlin.share-hub.co/core/tractors/"
+        "https://kremlin.share-hub.co/core/featured-listings/"
       );
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
@@ -23,12 +23,17 @@ const ListingsPage = () => {
       console.log(data);
       setTractors(data); // Assume the API returns an array of tractors
     } catch (err) {
-      setError(err.message);
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred");
+      }
     } finally {
       setLoading(false);
     }
   };
 
+  console.log(tractors)
   useEffect(() => {
     fetchData();
   }, []);
@@ -76,13 +81,13 @@ const ListingsPage = () => {
         <h1 className="text-2xl font-bold mb-5">Tractor On Sale</h1>
         <SearchBox />
         <div className="bg-secondaryColor"></div>
-        {loading ? (
+        {/* {loading ? (
           <p>Loading...</p>
         ) : error ? (
           <p className="text-red-500">Error: {error}</p>
         ) : (
           <TractorMarketplace tractors={tractors} />
-        )}
+        )} */}
       </div>
       <Footer />
     </div>

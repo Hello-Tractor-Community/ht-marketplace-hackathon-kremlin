@@ -32,13 +32,11 @@ export default function SignInForm() {
 
   const onSubmit = async (values: z.infer<typeof SignInValidation>) => {
     console.log("Form values:", values);
-    console.log(values);
     setIsLoading(true);
     setErrorMessage(null);
     setSuccessMessage(null);
-
+  
     try {
-      // API Call to UserRegistration
       const response = await fetch(
         "https://kremlin.share-hub.co/users/users/login/",
         {
@@ -49,25 +47,45 @@ export default function SignInForm() {
           body: JSON.stringify(values),
         }
       );
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Something went wrong");
       }
-
+  
       const data = await response.json();
       setSuccessMessage("Logging you in shortly :)");
       console.log("API Response:", data);
-      window.location.href = '/listings'
-      // Optionally, redirect the user to the login page or dashboard
-    } catch (error: any) {
-      setErrorMessage(error.message || "Failed to Log you in");
+      window.location.href = "/listings";
+    } catch (error) {
+      // Type guard to check if error is an instance of Error
+      if (error instanceof Error) {
+        setErrorMessage(error.message || "Failed to Log you in");
+      } else {
+        // Fallback for unknown error types
+        setErrorMessage("An unknown error occurred");
+      }
     } finally {
       setIsLoading(false);
     }
   };
+  
 
-  const onGoogleSignUp = () => {
+  const onGoogleSignUp = async () => {
+    try {
+      const response = await fetch('https://kremlin.share-hub.co/users/users/google_login/')
+      const data = response.json
+
+      console.log(data)
+    } catch (error) {
+       // Type guard to check if error is an instance of Error
+       if (error instanceof Error) {
+        setErrorMessage(error.message || "Failed to Log you in");
+      } else {
+        // Fallback for unknown error types
+        setErrorMessage("An unknown error occurred");
+      }
+    }
     console.log("Google Sign Up Initiated");
   };
 
