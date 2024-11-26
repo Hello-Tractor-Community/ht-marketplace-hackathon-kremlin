@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Tags, Heart } from "lucide-react";
@@ -6,6 +6,10 @@ import { ChevronLeft, ChevronRight, Tags, Heart } from "lucide-react";
 const TractorCard = ({ data }) => {
   const [currentImage, setCurrentImage] = useState(0);
   const [isWishlisted, setIsWishlisted] = useState(false);
+
+  const handleMakeOffer = () => {
+    window.location.href = "/product-details";
+  };
 
   return (
     <div className="w-64 bg-white rounded-lg shadow-md p-4 flex flex-col">
@@ -67,7 +71,10 @@ const TractorCard = ({ data }) => {
         </div>
 
         {/* Button */}
-        <button className="w-full bg-orange-500 text-white py-3 rounded-md mt-2 hover:bg-orange-600 transition-colors">
+        <button
+          className="w-full bg-orange-500 text-white py-3 rounded-md mt-2 hover:bg-orange-600 transition-colors"
+          onClick={handleMakeOffer}
+        >
           MAKE AN OFFER
         </button>
       </div>

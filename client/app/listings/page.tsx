@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Header from "../components/Header";
 import TractorMarketplace from "./components/TractorMarketplace";
@@ -7,36 +7,36 @@ import Footer from "../components/Footer";
 import SearchBox from "@/components/search-box";
 
 const ListingsPage = () => {
-  const [tractors, setTractors] = useState([]);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
+  // const [tractors, setTractors] = useState([]);
+  // const [error, setError] = useState("");
+  // const [loading, setLoading] = useState(true);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch(
-        "https://kremlin.share-hub.co/core/featured-listings/"
-      );
-      if (!response.ok) {
-        throw new Error(`Error: ${response.statusText}`);
-      }
-      const data = await response.json();
-      console.log(data);
-      setTractors(data); // Assume the API returns an array of tractors
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("An unknown error occurred");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const fetchData = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       "https://kremlin.share-hub.co/core/featured-listings/"
+  //     );
+  //     if (!response.ok) {
+  //       throw new Error(`Error: ${response.statusText}`);
+  //     }
+  //     const data = await response.json();
+  //     console.log(data);
+  //     setTractors(data); // Assume the API returns an array of tractors
+  //   } catch (err) {
+  //     if (err instanceof Error) {
+  //       setError(err.message);
+  //     } else {
+  //       setError("An unknown error occurred");
+  //     }
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  console.log(tractors)
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // console.log(tractors)
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   return (
     <div>
@@ -88,6 +88,7 @@ const ListingsPage = () => {
         ) : (
           <TractorMarketplace tractors={tractors} />
         )} */}
+        <TractorMarketplace/>
       </div>
       <Footer />
     </div>

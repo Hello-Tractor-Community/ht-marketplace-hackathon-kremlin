@@ -60,12 +60,12 @@ const Header = () => {
             <nav className="hidden md:block">
               <ul className="flex space-x-4 text-sm ">
                 <li>
-                  <a href="#" className="nav-link ">
+                  <a href="/" className="nav-link ">
                     Home
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="nav-link">
+                  <a href="/auth/sign-up" className="nav-link">
                     Buy Your Tractor
                   </a>
                 </li>
@@ -75,7 +75,7 @@ const Header = () => {
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="nav-link">
+                  <a href="/auth/sign-up" className="nav-link">
                     Dealer Listings
                   </a>
                 </li>
@@ -121,10 +121,10 @@ const Header = () => {
         <nav className="bg-white/70 backdrop-blur-md mx-4 px-4 pt-2 pb-4 rounded-3xl shadow-lg">
           <ul className="space-y-2">
             {[
-              { title: "Home", route: "#" },
-              { title: "Buy Your Tractor", route: "#" },
-              { title: "Sell Your Tractor", route: "#" },
-              { title: "Dealer Listings", route: "#" },
+              { title: "Home", route: "/" },
+              { title: "Buy Your Tractor", route: "/auth/sign-up" },
+              { title: "Sell Your Tractor", route: "/auth/sign-up" },
+              { title: "Dealer Listings", route: "/auth/sign-up" },
               { title: "Contact Us", route: "#" },
             ].map((item, index) => (
               <li
@@ -144,7 +144,7 @@ const Header = () => {
             ))}
           </ul>
           <div className="mt-4">
-            <Link href="/sign-in">
+            <Link href="/auth/sign-up">
               <PrimaryButton>
                 Buy A Tractor <ChevronDown />
               </PrimaryButton>

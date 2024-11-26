@@ -1,8 +1,10 @@
+"use client";
 import React from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MapPin } from "lucide-react";
+import { MapPin, FuelIcon } from "lucide-react";
+import Link from "next/link";
 
 const ProductDetailsSect = () => {
   const similarProducts = [
@@ -10,24 +12,28 @@ const ProductDetailsSect = () => {
       id: 1,
       name: "Ford 6610",
       price: "2,400,000",
-      image: "/api/placeholder/200/150",
+      image: "/images/marketplaceImg1.png",
       engine: "Diesel, Turbine engine",
     },
     {
       id: 2,
       name: "Mahindra Yuvo 575 DI",
       price: "2,100,000",
-      image: "/api/placeholder/200/150",
+      image: "/images/marketplaceImg2.png",
       engine: "Diesel, Turbine engine",
     },
     {
       id: 3,
       name: "Deutz Fahr 70 HP Agrolux",
       price: "2,900,000",
-      image: "/api/placeholder/200/150",
+      image: "/images/marketplaceImg3.png",
       engine: "Diesel, Turbine engine",
     },
   ];
+
+  const handleBookNow = () => {
+    window.location.href = "/chat";
+  };
 
   return (
     <div className="max-w-6xl mx-auto p-6">
@@ -35,8 +41,10 @@ const ProductDetailsSect = () => {
         {/* Left Column - Takes up 2 columns */}
         <div className="md:col-span-2">
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-6 h-6 bg-gray-200 rounded" />
-            <span className="text-gray-600">Used</span>
+            <span className="text-gray-600 flex items-center gap-2">
+              <FuelIcon />
+              Diesel
+            </span>
           </div>
 
           <h1 className="text-2xl font-bold mb-6">Massey Ferguson MF 385</h1>
@@ -110,16 +118,25 @@ const ProductDetailsSect = () => {
                 <h3 className="text-sm text-gray-500 mb-1">Price</h3>
                 <span className="text-2xl font-bold">KES. 2,800,000</span>
               </div>
-              <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white">
+              <Button
+                className="w-full bg-orange-500 hover:bg-orange-600 text-white"
+                onClick={handleBookNow}
+              >
                 Book Now
               </Button>
-              <div className="flex justify-center mt-4 gap-1">
-                {[1, 2, 3, 4, 5].map((star) => (
-                  <div
-                    key={star}
-                    className="w-8 h-8 rounded border border-gray-200"
-                  />
-                ))}
+
+              <div className="flex items-center mt-4 gap-1">
+                {Array(5)
+                  .fill(1)
+                  .map((_, index) => (
+                    <Image
+                      src="/star.png"
+                      key={index}
+                      alt="star"
+                      width={24}
+                      height={24}
+                    />
+                  ))}
               </div>
             </CardContent>
           </Card>
@@ -127,7 +144,7 @@ const ProductDetailsSect = () => {
           <div className="mb-6">
             <div className="flex items-center gap-3 mb-4">
               <Image
-                src="/api/placeholder/40/40"
+                src="/images/farmer.png"
                 alt="Alex Macharia"
                 className="rounded-full"
                 width={300}
@@ -150,20 +167,22 @@ const ProductDetailsSect = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {similarProducts.map((product) => (
             <Card key={product.id} className="shadow-sm">
-              <CardContent className="p-4">
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-40 object-cover rounded-lg mb-3"
-                  width={300}
-                  height={300}
-                />
-                <h3 className="font-medium mb-2">{product.name}</h3>
-                <p className="text-orange-500 font-bold mb-2">
-                  KES. {product.price}
-                </p>
-                <p className="text-sm text-gray-600">{product.engine}</p>
-              </CardContent>
+              <Link href="/product-details">
+                <CardContent className="p-4">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-40 object-cover rounded-lg mb-3"
+                    width={300}
+                    height={300}
+                  />
+                  <h3 className="font-medium mb-2">{product.name}</h3>
+                  <p className="text-orange-500 font-bold mb-2">
+                    KES. {product.price}
+                  </p>
+                  <p className="text-sm text-gray-600">{product.engine}</p>
+                </CardContent>
+              </Link>
             </Card>
           ))}
         </div>

@@ -5,20 +5,21 @@ import { Slider } from "@/components/ui/slider";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronDown, FuelIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
-interface Tractor {
-  id: string;
-  name: string;
-  brand: string;
-  price: number;
-  location: string;
-}
+// interface Tractor {
+//   id: string;
+//   name: string;
+//   brand: string;
+//   price: number;
+//   location: string;
+// }
 
-interface TractorMarketplaceProps {
-  tractors: Tractor[];
-}
+// interface TractorMarketplaceProps {
+//   tractors: Tractor[];
+// }
 
-const TractorMarketplace = ({tractors}) => {
+const TractorMarketplace = () => {
   const [expanded, setExpanded] = useState({
     price: true,
     make: true,
@@ -84,7 +85,9 @@ const TractorMarketplace = ({tractors}) => {
               className="flex items-center justify-between cursor-pointer mb-3"
               onClick={() => toggleSection("price")}
             >
-              <h3 className="font-semibold text-gray-700 text-primaryColor">PRICE</h3>
+              <h3 className="font-semibold text-gray-700 text-primaryColor">
+                PRICE
+              </h3>
               <ChevronDown
                 className={`w-5 h-5 transition-transform ${
                   expanded.price ? "rotate-180" : ""
@@ -107,7 +110,9 @@ const TractorMarketplace = ({tractors}) => {
               className="flex items-center justify-between cursor-pointer mb-3"
               onClick={() => toggleSection("make")}
             >
-              <h3 className="font-semibold text-gray-700 text-primaryColor">MAKE</h3>
+              <h3 className="font-semibold text-gray-700 text-primaryColor">
+                MAKE
+              </h3>
               <ChevronDown
                 className={`w-5 h-5 transition-transform ${
                   expanded.make ? "rotate-180" : ""
@@ -135,7 +140,9 @@ const TractorMarketplace = ({tractors}) => {
               className="flex items-center justify-between cursor-pointer mb-3"
               onClick={() => toggleSection("location")}
             >
-              <h3 className="font-semibold text-gray-700 text-primaryColor">LOCATION</h3>
+              <h3 className="font-semibold text-gray-700 text-primaryColor">
+                LOCATION
+              </h3>
               <ChevronDown
                 className={`w-5 h-5 transition-transform ${
                   expanded.location ? "rotate-180" : ""
@@ -163,7 +170,9 @@ const TractorMarketplace = ({tractors}) => {
               className="flex items-center justify-between cursor-pointer mb-3"
               onClick={() => toggleSection("fuel")}
             >
-              <h3 className="font-semibold text-gray-700 text-primaryColor">FUEL</h3>
+              <h3 className="font-semibold text-gray-700 text-primaryColor">
+                FUEL
+              </h3>
               <ChevronDown
                 className={`w-5 h-5 transition-transform ${
                   expanded.fuel ? "rotate-180" : ""
@@ -192,34 +201,38 @@ const TractorMarketplace = ({tractors}) => {
         <div className="grid gap-6">
           {tractors.map((tractor) => (
             <Card key={tractor.id} className="overflow-hidden">
-              <CardContent className="p-0">
-                <div className="flex flex-col sm:flex-row items-center gap-6 p-4">
-                  <div className="w-full sm:w-48 h-36 bg-gray-100 rounded-lg overflow-hidden">
-                    <Image
-                      src={tractor.image}
-                      alt={tractor.name}
-                      className="w-full h-full object-cover"
-                      width={300}
-                      height={300}
-                    />
-                  </div>
-                  <div className="flex-1 w-full">
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2">
-                      <h3 className="text-xl font-semibold">{tractor.name}</h3>
-                      <span className="text-orange-500 font-semibold mt-2 sm:mt-0">
-                        KES {tractor.price.toLocaleString()}
+              <Link href='/product-details'>
+                <CardContent className="p-0">
+                  <div className="flex flex-col sm:flex-row items-center gap-6 p-4">
+                    <div className="w-full sm:w-48 h-36 bg-gray-100 rounded-lg overflow-hidden">
+                      <Image
+                        src={tractor.image}
+                        alt={tractor.name}
+                        className="w-full h-full object-cover"
+                        width={300}
+                        height={300}
+                      />
+                    </div>
+                    <div className="flex-1 w-full">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2">
+                        <h3 className="text-xl font-semibold">
+                          {tractor.name}
+                        </h3>
+                        <span className="text-orange-500 font-semibold mt-2 sm:mt-0">
+                          KES {tractor.price.toLocaleString()}
+                        </span>
+                      </div>
+                      <span className="inline-block px-3 py-1 bg-gray-100 text-sm rounded mb-3">
+                        {tractor.location}
                       </span>
-                    </div>
-                    <span className="inline-block px-3 py-1 bg-gray-100 text-sm rounded mb-3">
-                      {tractor.location}
-                    </span>
-                    <div className="flex items-center gap-2 text-gray-600">
-                      <FuelIcon />
-                      <span className="text-sm">{tractor.engine}</span>
+                      <div className="flex items-center gap-2 text-gray-600">
+                        <FuelIcon />
+                        <span className="text-sm">{tractor.engine}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </CardContent>
+                </CardContent>
+              </Link>
             </Card>
           ))}
         </div>
@@ -229,4 +242,3 @@ const TractorMarketplace = ({tractors}) => {
 };
 
 export default TractorMarketplace;
-
