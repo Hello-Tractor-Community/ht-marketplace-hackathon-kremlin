@@ -1,25 +1,19 @@
 from rest_framework import serializers
 
-from users.models import Profile
+from users.serializers import UserSerializer
 
 from .models import (AgriImplement, Conversation, Message, OperatorProfile,
                      TractorImage, TractorListing)
 
 
-class ProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Profile
-        fields = ["id", "Profilename", "email", "first_name", "last_name"]
-
-
 class TractorImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = TractorImage
-        fields = ["id", "image", "is_primary"]
+        fields = ["id", "image_1", "image_2", "image_3", "is_primary"]
 
 
 class TractorListingSerializer(serializers.ModelSerializer):
-    seller = ProfileSerializer(read_only=True)
+    seller = UserSerializer(read_only=True)
     images = TractorImageSerializer(many=True, read_only=True)
 
     class Meta:
@@ -38,7 +32,7 @@ class TractorListingSerializer(serializers.ModelSerializer):
 
 
 class AgriImplementSerializer(serializers.ModelSerializer):
-    seller = ProfileSerializer(read_only=True)
+    seller = UserSerializer(read_only=True)
 
     class Meta:
         model = AgriImplement
@@ -46,7 +40,7 @@ class AgriImplementSerializer(serializers.ModelSerializer):
 
 
 class OperatorProfileSerializer(serializers.ModelSerializer):
-    Profile = ProfileSerializer(read_only=True)
+    Profile = UserSerializer(read_only=True)
 
     class Meta:
         model = OperatorProfile
@@ -54,7 +48,7 @@ class OperatorProfileSerializer(serializers.ModelSerializer):
 
 
 class MessageSerializer(serializers.ModelSerializer):
-    sender = ProfileSerializer(read_only=True)
+    sender = UserSerializer(read_only=True)
 
     class Meta:
         model = Message
@@ -62,8 +56,8 @@ class MessageSerializer(serializers.ModelSerializer):
 
 
 class ConversationSerializer(serializers.ModelSerializer):
-    sender = ProfileSerializer(read_only=True)
-    receiver = ProfileSerializer(read_only=True)
+    sender = UserSerializer(read_only=True)
+    receiver = UserSerializer(read_only=True)
     messages = MessageSerializer(many=True, read_only=True)
 
     class Meta:

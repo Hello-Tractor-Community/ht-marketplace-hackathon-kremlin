@@ -34,7 +34,9 @@ class TractorImage(models.Model):
     tractor = models.ForeignKey(
         TractorListing, related_name="images", on_delete=models.CASCADE
     )
-    image = models.ImageField(upload_to="tractor_images/")
+    image_1 = models.ImageField(upload_to="tractor_images/")
+    image_2 = models.ImageField(upload_to="tractor_images/", blank=True, null=True)
+    image_3 = models.ImageField(upload_to="tractor_images/", blank=True, null=True)
     is_primary = models.BooleanField(default=False)
 
 

@@ -56,21 +56,35 @@ class UserRegisterSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)
     email = serializers.EmailField(required=True)
     password = serializers.CharField(required=True, write_only=True)
+    role = serializers.ChoiceField(
+        choices=Profile.Role.choices, required=True
+    ) 
     token = serializers.SerializerMethodField(read_only=True)
 
     def validate(self, attrs):
-        data = super().validate(attrs)
-        username = data.get("username")
-        email = data.get("email")
-
+    # Remove role from the data before creating the user
+        role = attrs.pop('role')
+        
+        # Validate uniqueness
+        username = attrs.get("username")
+        email = attrs.get("email")
+        
         if _ := get_user(email, username=username):
             raise serializers.ValidationError("User with this email already exists")
+        
         with transaction.atomic():
-            self.user = User.objects.create_user(**data)
+            # Create user without the role
+            self.user = User.objects.create_user(**attrs)
+            
+            # Create profile with the role
             Profile.objects.create(
                 user=self.user,
+                role=role,
             )
-        return data
+        
+        # Add role back to attrs if needed for further processing
+        attrs['role'] = role
+        return attrs
 
     def save(self, **kwargs: dict):
         return self.user
@@ -96,13 +110,24 @@ class UserSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
     profile_picture = serializers.SerializerMethodField()
+    role = serializers.CharField(
+        source="get_role_display", read_only=True
+    )
 
     def get_profile_picture(self, obj):
         return obj.profile_picture
 
     class Meta:
         model = Profile
-        fields = ["uid", "user", "profile_picture", "metadata", "created", "modified"]
+        fields = [
+            "uid",
+            "user",
+            "profile_picture",
+            "role",
+            "metadata",
+            "created",
+            "modified",
+        ]  # Include role
 
 
 class GoogleCallbackSerializer(serializers.Serializer):
