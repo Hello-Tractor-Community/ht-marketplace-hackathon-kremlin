@@ -33,7 +33,12 @@ SECRET_KEY = 'django-insecure-z6zsb$xq=m6qb3qshr=057&rbt&l5q4o@yq%i)10@=5gcq8+uc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    "kremlin.share-hub.co",
+    "client.share-hub.co",
+    "localhost",
+    "127.0.0.1",
+]
 
 
 # Application definition
@@ -266,20 +271,24 @@ CHANNEL_LAYERS = {
     },
 }
 
+
 SWAGGER_SETTINGS = {
     "SECURITY_DEFINITIONS": {
         "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
     },
     "USE_SESSION_AUTH": False,
     "VALIDATOR_URL": None,
+    "SCHEMA_PROTOCOL": "https",
 }
 
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 
 CORS_ALLOWED_ORIGINS = [
     "https://kremlin.share-hub.co",
     "http://kremlin.share-hub.co",
-     "http://localhost:3000",
+    "http://localhost:3000",
     "http://localhost:8000",
     "https://client.share-hub.co",
 ]
