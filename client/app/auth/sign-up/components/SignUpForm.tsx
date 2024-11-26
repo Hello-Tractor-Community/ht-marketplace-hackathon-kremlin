@@ -1,7 +1,8 @@
 "use client";
 import React, { useState } from "react";
 import { z } from "zod";
-import axios from "axios";
+// import { useRouter } from "next/router";
+// import axios from "axios";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,36 +26,46 @@ import { SignUpValidation } from "@/utils/validation";
 import { ChevronRight } from "lucide-react";
 
 export default function SignUpForm() {
-  const [isLoading, setIsLoading] = useState(false); 
-  const [errorMessage, setErrorMessage] = useState<string | null>(null); 
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  // const router = useRouter();
 
   const form = useForm({
     resolver: zodResolver(SignUpValidation),
     defaultValues: {
-      firstName: "",
-      lastName: "",
+      username: "",
       email: "",
-      // phoneNumber: "",
       role: "Buyer",
       password: "",
     },
   });
 
   const onSubmit = async (values: z.infer<typeof SignUpValidation>) => {
+    console.log(values);
     setIsLoading(true);
     setErrorMessage(null);
     setSuccessMessage(null);
 
     try {
+      // Convert role to uppercase before making the API call
+      const payload = {
+        ...values,
+        role: values.role.toUpperCase(),
+      };
+
       // API Call to UserRegistration
-      const response = await fetch("http://127.0.0.1:8000/users/users/register/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
+      const response = await fetch(
+        "https://kremlin.share-hub.co/users/users/register/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -64,6 +75,9 @@ export default function SignUpForm() {
       const data = await response.json();
       setSuccessMessage("Account created successfully! Please log in.");
       console.log("API Response:", data);
+
+      // router.push('/auth/sign-in')
+      window.location.href = "/auth/sign-in";
 
       // Optionally, redirect the user to the login page or dashboard
     } catch (error) {
@@ -120,45 +134,24 @@ export default function SignUpForm() {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              {/* First Name */}
-              <FormField
-                control={form.control}
-                name="firstName"
-                render={({ field }) => (
-                  <FormItem>
-                    <Label>First Name</Label>
-                    <FormControl>
-                      <Input
-                        placeholder="First name"
-                        {...field}
-                        className="rounded-md"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Last Name */}
-              <FormField
-                control={form.control}
-                name="lastName"
-                render={({ field }) => (
-                  <FormItem>
-                    <Label>Last Name</Label>
-                    <FormControl>
-                      <Input
-                        placeholder="Last name"
-                        {...field}
-                        className="rounded-md"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            {/* User Name */}
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <Label>User Name</Label>
+                  <FormControl>
+                    <Input
+                      placeholder="Username"
+                      {...field}
+                      className="rounded-md"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             {/* Email */}
             <FormField
@@ -179,26 +172,6 @@ export default function SignUpForm() {
                 </FormItem>
               )}
             />
-
-            {/* Phone Number
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <Label>Phone Number</Label>
-                  <FormControl>
-                    <Input
-                      type="tel"
-                      placeholder="+1 (123) 456-7890"
-                      {...field}
-                      className="rounded-md"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
 
             {/* Role */}
             <FormField
