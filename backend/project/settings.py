@@ -278,7 +278,8 @@ SWAGGER_SETTINGS = {
 
 CORS_ALLOWED_ORIGINS = [
     "https://kremlin.share-hub.co",
-    "http://localhost:3000",
+    "http://kremlin.share-hub.co",
+     "http://localhost:3000",
     "http://localhost:8000",
     "https://client.share-hub.co",
 ]
