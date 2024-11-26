@@ -66,6 +66,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "users.middleware.HttpsRedirectMiddleware",
 ]
 
 ROOT_URLCONF = 'project.urls'
@@ -266,6 +267,16 @@ CHANNEL_LAYERS = {
     },
 }
 
+SWAGGER_SETTINGS = {
+    "SECURITY_DEFINITIONS": {
+        "Bearer": {"type": "apiKey", "name": "Authorization", "in": "header"}
+    },
+    "USE_SESSION_AUTH": False,
+    "VALIDATOR_URL": None,
+    "SCHEMA_PROTOCOL": "https",
+}
+
+
 
 CORS_ALLOWED_ORIGINS = [
     "https://kremlin.share-hub.co",
@@ -274,9 +285,11 @@ CORS_ALLOWED_ORIGINS = [
     "https://client.share-hub.co",
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
 
-# SECURE_SSL_REDIRECT = True
-# SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 
 CSRF_TRUSTED_ORIGINS = [
