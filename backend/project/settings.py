@@ -33,12 +33,7 @@ SECRET_KEY = 'django-insecure-z6zsb$xq=m6qb3qshr=057&rbt&l5q4o@yq%i)10@=5gcq8+uc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    "kremlin.share-hub.co",
-    "client.share-hub.co",
-    "localhost",
-    "127.0.0.1",
-]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
