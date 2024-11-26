@@ -7,19 +7,23 @@ import { ChevronDown, FuelIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-// interface Tractor {
-//   id: string;
-//   name: string;
-//   brand: string;
-//   price: number;
-//   location: string;
-// }
+interface Tractor {
+  id: number;
+  name: string;
+  brand: string;
+  model: string;
+  price: string;
+  condition: string;
+  location: string;
+  description: string;
+  images: string[];
+}
 
-// interface TractorMarketplaceProps {
-//   tractors: Tractor[];
-// }
+interface TractorMarketplaceProps {
+  tractors: Tractor[];
+}
 
-const TractorMarketplace = () => {
+const TractorMarketplace = ({ tractors }: TractorMarketplaceProps) => {
   const [expanded, setExpanded] = useState({
     price: true,
     make: true,
@@ -27,41 +31,6 @@ const TractorMarketplace = () => {
     year: true,
     fuel: true,
   });
-
-  const tractors = [
-    {
-      id: 1,
-      name: "New Holland TT75",
-      price: 1800000,
-      image: "/images/marketplaceImg1.png",
-      engine: "Diesel Engine",
-      location: "KISUMU",
-    },
-    {
-      id: 2,
-      name: "Massey Ferguson MF 385",
-      price: 2400000,
-      image: "/images/marketplaceImg2.png",
-      engine: "Diesel Engine",
-      location: "ELDORET",
-    },
-    {
-      id: 3,
-      name: "Kubota L4508",
-      price: 1600000,
-      image: "/images/marketplaceImg3.png",
-      engine: "Diesel Engine",
-      location: "NAIROBI",
-    },
-    {
-      id: 4,
-      name: "Ford 6610",
-      price: 2500000,
-      image: "/images/marketplaceImg4.png",
-      engine: "Diesel Engine",
-      location: "NAROK",
-    },
-  ];
 
   const makes = ["John Deere", "Massey Ferguson", "Case IH", "Kubota", "Fendt"];
   const locations = ["Nairobi", "Mombasa", "Kisumu"];
@@ -201,33 +170,41 @@ const TractorMarketplace = () => {
         <div className="grid gap-6">
           {tractors.map((tractor) => (
             <Card key={tractor.id} className="overflow-hidden">
-              <Link href='/product-details'>
+              <Link href="/product-details">
                 <CardContent className="p-0">
                   <div className="flex flex-col sm:flex-row items-center gap-6 p-4">
                     <div className="w-full sm:w-48 h-36 bg-gray-100 rounded-lg overflow-hidden">
-                      <Image
-                        src={tractor.image}
-                        alt={tractor.name}
-                        className="w-full h-full object-cover"
-                        width={300}
-                        height={300}
-                      />
+                      {tractor.images.map((image) => (
+                        <Image
+                          key={image.id}
+                          alt="Image"
+                          src={image.image_1}
+                          width={300}
+                          height={300}
+                        />
+                      ))}
                     </div>
                     <div className="flex-1 w-full">
                       <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2">
+                        <span className="inline-block px-3 py-1  text-sm  mb-3">
+                          {tractor.brand}
+                        </span>
                         <h3 className="text-xl font-semibold">
-                          {tractor.name}
+                          {tractor?.model}
                         </h3>
                         <span className="text-orange-500 font-semibold mt-2 sm:mt-0">
                           KES {tractor.price.toLocaleString()}
                         </span>
                       </div>
-                      <span className="inline-block px-3 py-1 bg-gray-100 text-sm rounded mb-3">
+                      <span className="inline-block px-3 my-2 py-1 bg-gray-100 text-sm rounded mb-3">
                         {tractor.location}
+                      </span>
+                      <span className="text-[0.5rem] text-gray-600 inline-block my-4">
+                        {tractor.description}
                       </span>
                       <div className="flex items-center gap-2 text-gray-600">
                         <FuelIcon />
-                        <span className="text-sm">{tractor.engine}</span>
+                        <span className="text-sm">{tractor.condition}</span>
                       </div>
                     </div>
                   </div>
