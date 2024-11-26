@@ -39,6 +39,11 @@ class TractorImage(models.Model):
     image_3 = models.ImageField(upload_to="tractor_images/", blank=True, null=True)
     is_primary = models.BooleanField(default=False)
 
+    def get_photo_url(self, obj):
+        request = self.context.get("request")
+        photo_url = obj.photo.url
+        return request.build_absolute_uri(photo_url)
+
 
 class AgriImplement(models.Model):
     IMPLEMENT_TYPES = [
