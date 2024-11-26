@@ -268,11 +268,10 @@ CHANNEL_LAYERS = {
 
 
 CORS_ALLOWED_ORIGINS = [
-    "https://admin.karegivv.com",
-    "https://karegivv.com",
-    "https://www.karegivv.com",
+    "https://kremlin.share-hub.co",
     "http://localhost:3000",
     "http://localhost:8000",
+    "https://client.share-hub.co",
 ]
 
 
