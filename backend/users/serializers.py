@@ -75,14 +75,17 @@ class UserRegisterSerializer(serializers.Serializer):
         with transaction.atomic():
             # Create user without the role
             self.user = User.objects.create_user(**attrs)
+
+            # if user is seller give access to admin panel
+            if role == Profile.Role.SELLER:
+                self.user.is_staff = True
+                self.user.save()
             
             # Create profile with the role
             Profile.objects.create(
                 user=self.user,
                 role=role,
             )
-        
-        # Add role back to attrs if needed for further processing
         attrs['role'] = role
         return attrs
 
@@ -127,7 +130,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "metadata",
             "created",
             "modified",
-        ]  # Include role
+        ]
 
 
 class GoogleCallbackSerializer(serializers.Serializer):
