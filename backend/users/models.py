@@ -42,6 +42,7 @@ class Profile(BaseModel):
 
     role = models.CharField(max_length=6, choices=Role.choices, default=Role.BUYER)
     is_verified = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
     
 
     def __str__(self):

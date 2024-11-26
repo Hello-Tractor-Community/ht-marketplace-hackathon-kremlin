@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MapPin } from "lucide-react";
 
-const ProductDetails = () => {
+const ProductDetailsSect = () => {
   const similarProducts = [
     {
       id: 1,
@@ -172,4 +172,4 @@ const ProductDetails = () => {
   );
 };
 
-export default ProductDetails;
+export default ProductDetailsSect;

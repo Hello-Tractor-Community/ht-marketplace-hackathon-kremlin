@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Header from "../components/Header";
+import ProductDetailsSect from "./components/ProductDetailsSect";
 
 const ProductDetails = () => {
   return (
@@ -38,6 +39,7 @@ const ProductDetails = () => {
           </div>
         </div>
       </div>
+      <ProductDetailsSect/>
     </div>
   );
 };
