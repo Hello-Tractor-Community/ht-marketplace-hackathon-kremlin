@@ -1,5 +1,4 @@
-from rest_framework import viewsets, permissions, filters
-from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets, permissions
 from .models import (
     TractorListing,
     AgriImplement,
@@ -30,14 +29,6 @@ class TractorListingViewSet(viewsets.ModelViewSet):
     queryset = TractorListing.objects.all()
     serializer_class = TractorListingSerializer
     permission_classes = [IsSellerOrReadOnly]
-    filter_backends = [
-        DjangoFilterBackend,
-        filters.SearchFilter,
-        filters.OrderingFilter,
-    ]
-    filterset_fields = ["brand", "model", "year", "price", "condition", "location"]
-    search_fields = ["brand", "model", "description"]
-    ordering_fields = ["price", "year", "created_at"]
 
     def perform_create(self, serializer):
         serializer.save(seller=self.request.user.profile)
@@ -50,35 +41,12 @@ class AgriImplementViewSet(viewsets.ModelViewSet):
     queryset = AgriImplement.objects.all()
     serializer_class = AgriImplementSerializer
     permission_classes = [IsSellerOrReadOnly]
-    filter_backends = [
-        DjangoFilterBackend,
-        filters.SearchFilter,
-        filters.OrderingFilter,
-    ]
-    filterset_fields = [
-        "name",
-        "implement_type",
-        "brand",
-        "price",
-        "condition",
-        "location",
-    ]
-    search_fields = ["name", "description"]
-    ordering_fields = ["price", "created_at"]
 
 
 class OperatorProfileViewSet(viewsets.ModelViewSet):
     queryset = OperatorProfile.objects.all()
     serializer_class = OperatorProfileSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    filter_backends = [
-        DjangoFilterBackend,
-        filters.SearchFilter,
-        filters.OrderingFilter,
-    ]
-    filterset_fields = ["location", "experience_years", "is_verified"]
-    search_fields = ["certifications", "location"]
-    ordering_fields = ["hourly_rate", "experience_years"]
 
 
 class ConversationViewSet(viewsets.ModelViewSet):
